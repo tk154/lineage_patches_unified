@@ -1,0 +1,33 @@
+From 6c455a9f013ed0ca5765aa520aceb1bca7873b9d Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Sun, 27 Oct 2024 18:00:45 +0100
+Subject: [PATCH] Revert "sepolicy: Label iso9660 and udf filesystem"
+
+This reverts commit 70ed191f2b6a6af1ff9387da413e7583766e9268.
+---
+ common/private/genfs_contexts | 3 ---
+ common/public/file.te         | 2 --
+ 2 files changed, 5 deletions(-)
+ delete mode 100644 common/public/file.te
+
+diff --git a/common/private/genfs_contexts b/common/private/genfs_contexts
+index 57f7e0e..d096874 100644
+--- a/common/private/genfs_contexts
++++ b/common/private/genfs_contexts
+@@ -1,5 +1,2 @@
+ genfscon sysfs /devices/virtual/timed_output/vibrator u:object_r:sysfs_vibrator:s0
+ genfscon sysfs /module/mmcblk/parameters/perdev_minors u:object_r:sysfs_perdev_minors:s0
+-
+-genfscon iso9660 / u:object_r:iso9660:s0
+-genfscon udf / u:object_r:udf:s0
+diff --git a/common/public/file.te b/common/public/file.te
+deleted file mode 100644
+index 00c194d..0000000
+--- a/common/public/file.te
++++ /dev/null
+@@ -1,2 +0,0 @@
+-type iso9660, sdcard_type, fs_type, mlstrustedobject;
+-type udf, sdcard_type, fs_type, mlstrustedobject;
+-- 
+2.47.0
+
