@@ -1,0 +1,29 @@
+From db3c7e03fc7b0b7816c4c339de3e648810d33f84 Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Sat, 14 Mar 2026 11:23:44 +0100
+Subject: [PATCH] gd/hci: fix LE initiator own address type selection
+
+Change-Id: I8d1d8ad8cde47f81f998cdd90b7f0b0020868268
+---
+ system/gd/hci/acl_manager/le_impl.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/system/gd/hci/acl_manager/le_impl.h b/system/gd/hci/acl_manager/le_impl.h
+index baa38c22d7..2935c89663 100644
+--- a/system/gd/hci/acl_manager/le_impl.h
++++ b/system/gd/hci/acl_manager/le_impl.h
+@@ -756,8 +756,10 @@ struct le_impl : public bluetooth::hci::LeAddressManagerCallback {
+       le_scan_window_coded = kScanWindowCodedFast;
+     }
+     InitiatorFilterPolicy initiator_filter_policy = InitiatorFilterPolicy::USE_FILTER_ACCEPT_LIST;
++    const AddressType addressType = le_address_manager_->GetCurrentAddress().GetAddressType();
+     OwnAddressType own_address_type =
+-        static_cast<OwnAddressType>(le_address_manager_->GetCurrentAddress().GetAddressType());
++        (addressType == AddressType::PUBLIC_DEVICE_ADDRESS || addressType == AddressType::PUBLIC_IDENTITY_ADDRESS) ?
++            OwnAddressType::RESOLVABLE_OR_PUBLIC_ADDRESS : OwnAddressType::RESOLVABLE_OR_RANDOM_ADDRESS;
+     uint16_t conn_interval_min = 0x0018;
+     uint16_t conn_interval_max = 0x0028;
+     uint16_t conn_latency = 0x0000;
+-- 
+2.43.0
+
