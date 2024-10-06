@@ -1,0 +1,61 @@
+From f5e13bee382a7dbc556e21cec6c155eacb335a5e Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Sun, 6 Oct 2024 17:45:00 +0200
+Subject: [PATCH] Always use Spotify as MediaButtonReceiver
+
+Change-Id: I174292222061cce7f9124d5547237d846fd81e10
+---
+ .../server/media/MediaSessionService.java     | 20 ++++---------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
+
+diff --git a/services/core/java/com/android/server/media/MediaSessionService.java b/services/core/java/com/android/server/media/MediaSessionService.java
+index e2163c54f4e29..6e51fae6739de 100644
+--- a/services/core/java/com/android/server/media/MediaSessionService.java
++++ b/services/core/java/com/android/server/media/MediaSessionService.java
+@@ -127,6 +127,9 @@ public class MediaSessionService extends SystemService implements Monitor {
+      */
+     private static final String MEDIA_BUTTON_RECEIVER = "media_button_receiver";
+ 
++    private static final String SPOTIFY_MEDIA_BUTTON_RECEIVER =
++        "com.spotify.music/com.spotify.mediasession.mediasession.receiver.MediaButtonReceiver,0,1";
++
+     /**
+      * Action reported to UsageStatsManager when a media session becomes active and user engaged
+      * for a given app. App is expected to show an ongoing notification after this.
+@@ -1057,12 +1060,9 @@ public class MediaSessionService extends SystemService implements Monitor {
+             mContentResolver = mContext.createContextAsUser(UserHandle.of(mFullUserId), 0)
+                     .getContentResolver();
+             mPriorityStack = new MediaSessionStack(mAudioPlayerStateMonitor, this);
+-            // Restore the remembered media button receiver before the boot.
+-            String mediaButtonReceiverInfo = Settings.Secure.getString(mContentResolver,
+-                    MEDIA_BUTTON_RECEIVER);
+             mLastMediaButtonReceiverHolder =
+                     MediaButtonReceiverHolder.unflattenFromString(
+-                            mContext, mediaButtonReceiverInfo);
++                            mContext, SPOTIFY_MEDIA_BUTTON_RECEIVER);
+         }
+ 
+         public void destroySessionsForUserLocked(int userId) {
+@@ -1168,19 +1168,7 @@ public class MediaSessionService extends SystemService implements Monitor {
+             }
+         }
+ 
+-        // Remember media button receiver and keep it in the persistent storage.
+         public void rememberMediaButtonReceiverLocked(MediaSessionRecordImpl record) {
+-            if (record instanceof MediaSession2Record) {
+-                // TODO(jaewan): Implement
+-                return;
+-            }
+-            MediaSessionRecord sessionRecord = (MediaSessionRecord) record;
+-            mLastMediaButtonReceiverHolder = sessionRecord.getMediaButtonReceiver();
+-            String mediaButtonReceiverInfo = (mLastMediaButtonReceiverHolder == null)
+-                    ? "" : mLastMediaButtonReceiverHolder.flattenToString();
+-            Settings.Secure.putString(mContentResolver,
+-                    MEDIA_BUTTON_RECEIVER,
+-                    mediaButtonReceiverInfo);
+         }
+ 
+         private void pushAddressedPlayerChangedLocked(
+-- 
+2.47.0
+

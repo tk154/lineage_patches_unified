@@ -1,0 +1,27 @@
+From 05fb2cf58d071c6812d5db80319b51e254c208c6 Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Sun, 6 Oct 2024 17:42:39 +0200
+Subject: [PATCH] Ignore non-working BPF CookieTagMap
+
+Change-Id: Id0d6c03616e12d1b74c382addec6e79a0acdf62b
+---
+ service-t/src/com/android/server/net/SkDestroyListener.java | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/service-t/src/com/android/server/net/SkDestroyListener.java b/service-t/src/com/android/server/net/SkDestroyListener.java
+index a6cc2b5..bce9ea1 100644
+--- a/service-t/src/com/android/server/net/SkDestroyListener.java
++++ b/service-t/src/com/android/server/net/SkDestroyListener.java
+@@ -63,6 +63,9 @@ public class SkDestroyListener extends NetlinkMonitor {
+ 
+     @Override
+     public void processNetlinkMessage(final NetlinkMessage nlMsg, final long whenMs) {
++        if (mCookieTagMap == null)
++            return;
++
+         if (!(nlMsg instanceof InetDiagMessage)) {
+             mLog.e("Received non InetDiagMessage");
+             return;
+-- 
+2.46.2
+

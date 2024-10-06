@@ -1,0 +1,32 @@
+From cea504ad8b450751b70d636ca9f278eaf1874397 Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Sun, 6 Oct 2024 17:39:34 +0200
+Subject: [PATCH] Always fallback to software scanning
+
+Change-Id: I7c35554254264625f184bd1c077dc14e4b2d8b10
+---
+ .../server/wifi/scanner/WifiScanningServiceImpl.java        | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/service/java/com/android/server/wifi/scanner/WifiScanningServiceImpl.java b/service/java/com/android/server/wifi/scanner/WifiScanningServiceImpl.java
+index 77383f6..b19f4d4 100644
+--- a/service/java/com/android/server/wifi/scanner/WifiScanningServiceImpl.java
++++ b/service/java/com/android/server/wifi/scanner/WifiScanningServiceImpl.java
+@@ -2456,13 +2456,9 @@ public class WifiScanningServiceImpl extends IWifiScanner.Stub {
+                                 scanParams.pnoSettings.isConnected)) {
+                             deferMessage(msg);
+                             transitionTo(mHwPnoScanState);
+-                        } else if (mWifiGlobals.isSwPnoEnabled()
+-                                && mDeviceConfigFacade.isSoftwarePnoEnabled()) {
++                        } else {
+                             deferMessage(msg);
+                             transitionTo(mSwPnoScanState);
+-                        } else {
+-                            Log.w(TAG, "PNO is not available");
+-                            ci.replyFailed(WifiScanner.REASON_INVALID_REQUEST, "not supported");
+                         }
+                         break;
+                     case WifiScanner.CMD_STOP_PNO_SCAN:
+-- 
+2.46.2
+
