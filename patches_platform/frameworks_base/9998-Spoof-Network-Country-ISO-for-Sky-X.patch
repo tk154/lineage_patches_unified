@@ -1,0 +1,27 @@
+From 2b275ec5955a01f8522657a934864bdeea79d701 Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Sun, 29 Dec 2024 12:01:02 +0100
+Subject: [PATCH] Spoof Network Country ISO for Sky X
+
+Change-Id: I09456d58f25c4b21a9bcf6c7db98607752dff469
+---
+ telephony/java/android/telephony/TelephonyManager.java | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/telephony/java/android/telephony/TelephonyManager.java b/telephony/java/android/telephony/TelephonyManager.java
+index 52f578a5b8a8..e6f8ff8b1ce3 100644
+--- a/telephony/java/android/telephony/TelephonyManager.java
++++ b/telephony/java/android/telephony/TelephonyManager.java
+@@ -3046,6 +3046,9 @@ public class TelephonyManager {
+     @RequiresFeature(PackageManager.FEATURE_TELEPHONY_RADIO_ACCESS)
+     @NonNull
+     public String getNetworkCountryIso(int slotIndex) {
++        if (getOpPackageName().equals("com.bskyb.skyx.at"))
++            return "at";
++
+         try {
+             if (slotIndex != SubscriptionManager.DEFAULT_SIM_SLOT_INDEX
+                     && !SubscriptionManager.isValidSlotIndex(slotIndex)) {
+-- 
+2.47.1
+

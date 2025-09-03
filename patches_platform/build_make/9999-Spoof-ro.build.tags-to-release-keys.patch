@@ -1,0 +1,26 @@
+From 6fdc1cbe3e8e1fab9950f81226d4bd79cefa69cd Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Wed, 3 Sep 2025 16:15:42 +0200
+Subject: [PATCH] Spoof ro.build.tags to release-keys
+
+Change-Id: Idccd82bd8292c1c54123d2c5619f6c91e285706f
+---
+ tools/buildinfo.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/buildinfo.sh b/tools/buildinfo.sh
+index f0627a307..d934d0d64 100755
+--- a/tools/buildinfo.sh
++++ b/tools/buildinfo.sh
+@@ -26,7 +26,7 @@ echo "ro.build.date.utc=`$DATE +%s`"
+ echo "ro.build.type=$TARGET_BUILD_TYPE"
+ echo "ro.build.user=$BUILD_USERNAME"
+ echo "ro.build.host=$BUILD_HOSTNAME"
+-echo "ro.build.tags=$BUILD_VERSION_TAGS"
++echo "ro.build.tags=release-keys"
+ echo "ro.build.flavor=$TARGET_BUILD_FLAVOR"
+ if [ -n "$BOARD_BUILD_SYSTEM_ROOT_IMAGE" ] ; then
+   echo "ro.build.system_root_image=$BOARD_BUILD_SYSTEM_ROOT_IMAGE"
+-- 
+2.48.1
+

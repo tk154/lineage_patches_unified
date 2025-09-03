@@ -1,0 +1,24 @@
+From 5d96a3b9e00d2c6b9d03a0acee41706bae2d81b8 Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Wed, 3 Sep 2025 14:48:55 +0200
+Subject: [PATCH] Spoof Manufacturer and Model
+
+Change-Id: I8d48eee7e7200fb5c038be4001cc1be15c637a21
+---
+ system.prop | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/system.prop b/system.prop
+index a6c7ede..a492b1b 100644
+--- a/system.prop
++++ b/system.prop
+@@ -14,3 +14,6 @@ ro.boot.realme.lockstate=0
+ 
+ #Fixes fingerprint unlock delay
+ persist.wm.enable_remote_keyguard_animation=0
++
++ro.product.manufacturer=Nothing
++ro.product.model=A063
+-- 
+2.48.1
+

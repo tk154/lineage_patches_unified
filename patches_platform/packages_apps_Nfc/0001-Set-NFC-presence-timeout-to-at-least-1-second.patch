@@ -1,0 +1,26 @@
+From 2710e4d917150aa5a975b02799fba3c6786bbd15 Mon Sep 17 00:00:00 2001
+From: Til Kaiser <mail@tk154.de>
+Date: Wed, 3 Sep 2025 13:51:30 +0200
+Subject: [PATCH] Set NFC presence timeout to at least 1 second
+
+Change-Id: I10c92a67766a250a9766dbd530b53a10d0c33922
+---
+ nci/src/com/android/nfc/dhimpl/NativeNfcTag.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nci/src/com/android/nfc/dhimpl/NativeNfcTag.java b/nci/src/com/android/nfc/dhimpl/NativeNfcTag.java
+index 671ea2b2..bb4b5dc8 100755
+--- a/nci/src/com/android/nfc/dhimpl/NativeNfcTag.java
++++ b/nci/src/com/android/nfc/dhimpl/NativeNfcTag.java
+@@ -82,7 +82,7 @@ public class NativeNfcTag implements TagEndpoint {
+ 
+         public PresenceCheckWatchdog(int presenceCheckDelay,
+                                      @Nullable DeviceHost.TagDisconnectedCallback callback) {
+-            watchdogTimeout = presenceCheckDelay;
++            watchdogTimeout = presenceCheckDelay < 1000 ? 1000 : presenceCheckDelay;
+             tagDisconnectedCallback = callback;
+         }
+ 
+-- 
+2.48.1
+
